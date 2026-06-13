@@ -12,6 +12,7 @@ import { Clock, LogOut, CreditCard } from 'lucide-react'
 
 let socket = null
 const OWNER_ADMIN_EMAIL = 'n33sh07@gmail.com'
+const API_URL = import.meta.env.VITE_API_URL || ''
 
 // ─── Session Helpers ────────────────────────────────────────────
 function saveSession(user) {
@@ -87,7 +88,7 @@ export default function App() {
 
   // ─── Init socket and load data when user logs in ──────────────
   useEffect(() => {
-    socket = io()
+    socket = io(API_URL, { transports: ['websocket', 'polling'] })
     socket.on('connect', () => {
       console.log('[Socket] Connected:', socket.id)
     })
