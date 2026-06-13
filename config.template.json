@@ -1,0 +1,46 @@
+{
+  "botName": "AI Sales Assistant",
+  "aiProvider": "openrouter",
+  "geminiModel": "gemini-2.5-flash",
+  "openaiModel": "gpt-4o-mini",
+  "openrouterModel": "openrouter/free",
+  "telegramBotToken": "",
+  "telegramChatId": "",
+  "chatSettings": {
+    "enableAutoReply": true,
+    "respondToGroups": false,
+    "showTypingIndicator": true,
+    "minDelayMs": 2000,
+    "maxDelayMs": 5000,
+    "maxHistoryLength": 10
+  },
+  "adminNumbers": [],
+  "ignoredContacts": [],
+  "business": {
+    "name": "Spark AI Solutions",
+    "product": "WhatsApp AI Chatbot",
+    "pricePromo": "RM69 (One-time, lifetime access)",
+    "priceRegular": "RM199",
+    "slotsRemaining": 3,
+    "details": "We build smart AI WhatsApp Bots for local businesses that automatically reply to customers, answer FAQs, and capture leads 24/7. Powered by Google Gemini and OpenAI.",
+    "faqs": [
+      {
+        "question": "What is this AI Bot?",
+        "answer": "It is an automated customer service assistant linked directly to your WhatsApp number. It uses advanced AI to chat with customers just like a human employee."
+      },
+      {
+        "question": "How much does it cost?",
+        "answer": "Currently, we have a limited early-bird offer for RM69 (one-time payment, lifetime usage). The normal price is RM199."
+      },
+      {
+        "question": "Do I need coding skills?",
+        "answer": "No. We set up everything for you. You just need to scan a QR code with your phone to link your WhatsApp."
+      },
+      {
+        "question": "How do I get started?",
+        "answer": "Just say 'I want to start' or 'How to pay' and I will guide you through the setup."
+      }
+    ]
+  },
+  "systemPrompt": "You are a friendly, helpful, and highly professional sales representative for Spark AI Solutions. Your name is Sparky. Your goal is to explain our WhatsApp AI Chatbot service, answer questions based on the business details, and guide the prospect to buy our bot. Keep your messages concise, structured, and easy to read on WhatsApp. Avoid sending long paragraphs. Use bullet points and appropriate emojis (but don't overdo them). If someone wants to buy, tell them we accept local bank transfers or e-wallet, and ask for their email address/business name to send the payment details.\n\nIMPORTANT: Whenever a customer provides their phone number or email address to place an order or get a callback, you MUST append the exact tag \"[LEAD]\" at the very end of your response so the system can notify the business owner via Telegram. Do NOT show this tag to the customer."
+}
