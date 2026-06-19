@@ -9,8 +9,8 @@ const { sendTelegram, formatLeadMessage } = require("./telegram-notifier");
 // Holds all active WhatsApp client instances: { [clientId]: { client, aiService, status, messageCount, startTime } }
 const instances = {};
 
-const CONFIG_DIR = __dirname;
-const TEMPLATE_CONFIG_PATH = path.join(CONFIG_DIR, "config.template.json");
+const CONFIG_DIR = process.env.DATA_DIR || __dirname;
+const TEMPLATE_CONFIG_PATH = path.join(__dirname, "config.template.json");
 
 function getConfigPath(clientId) {
   return clientId === "default"
@@ -19,7 +19,7 @@ function getConfigPath(clientId) {
 }
 
 function getTemplateConfigPath() {
-  const legacyTemplatePath = path.join(CONFIG_DIR, "config.json");
+  const legacyTemplatePath = path.join(__dirname, "config.json");
   return fs.existsSync(TEMPLATE_CONFIG_PATH) ? TEMPLATE_CONFIG_PATH : legacyTemplatePath;
 }
 
@@ -78,11 +78,18 @@ function listClients() {
 }
 
 function getExecutablePath() {
+  if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+    return process.env.PUPPETEER_EXECUTABLE_PATH;
+  }
   const paths = [
     "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
     "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
     path.join(process.env.LOCALAPPDATA || "C:\\Users\\User\\AppData\\Local", "Google\\Chrome\\Application\\chrome.exe"),
-    "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe"
+    "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+    "/usr/bin/chromium",
+    "/usr/bin/chromium-browser",
+    "/usr/bin/google-chrome-stable",
+    "/usr/bin/google-chrome"
   ];
   for (const p of paths) {
     if (fs.existsSync(p)) {
@@ -94,7 +101,7 @@ function getExecutablePath() {
 
 function clearSessionLocks(clientId) {
   const sessionFolderName = clientId === "default" ? "session" : `session-${clientId}`;
-  const sessionDir = path.join(__dirname, ".wwebjs_auth", sessionFolderName);
+  const sessionDir = path.join(CONFIG_DIR, ".wwebjs_auth", sessionFolderName);
   if (!fs.existsSync(sessionDir)) return;
 
   const lockFiles = [
@@ -153,7 +160,10 @@ async function startClient(clientId, io) {
   }
 
   const client = new Client({
-    authStrategy: new LocalAuth({ clientId }),
+    authStrategy: new LocalAuth({
+      clientId,
+      dataPath: path.join(CONFIG_DIR, ".wwebjs_auth")
+    }),
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
     puppeteer: {
       headless: true,

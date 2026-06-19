@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const DB_PATH = path.join(__dirname, 'users.json');
+const DATA_DIR = process.env.DATA_DIR || __dirname;
+const DB_PATH = path.join(DATA_DIR, 'users.json');
 const TRIAL_DURATION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 const ACTIVE_SUBSCRIPTION_STATUSES = new Set(['trialing', 'active']);
 const OWNER_ADMIN_EMAIL = 'n33sh07@gmail.com';
